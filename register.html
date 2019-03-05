@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+		
+	</script>
+</head>
+<body>
+
+	<form action="mailto:emaildelaempresaquehaceelformulario@email.com" method="post" enctype="text/plain">
+
+Name: <input type="text" name="nombre" size="25" maxlength="50" id="name"><br><br>
+
+Pass: <input type="text" name="contrasenna" size="35" maxlength="100" id="contrasenna">
+
+Passconfirmed: <input type="text" name="contrasenna" size="35" maxlength="100" id="contrasennaconfirmada">
+
+Email: <input type="text" name="email" size="35" maxlength="100" id="email">
+<br><br>
+<button type="button"id="registerbutton"> register</button>
+<br><br>
+
+	
+</form>
+<script >
+	
+		$('#registerbutton').click(function(){
+		var name = $("#name").val();
+		var Pass = $("#contrasenna").val();
+		var passconfirmed = $("#contrasennaconfirmada")
+		var email = $("#email").val();
+		var role_id = 2;
+		$.ajax({
+			type:"POST",
+			url:'http://localhost:8888/Gpass/Gpass2.0/public/api/store',
+			data:{
+				'name':name,
+				'password':Pass,
+				'passwordConfirm':passconfirmed;
+				'email':email,
+				'role_id':role_id
+			},
+			success: function(response){
+				alert(response.message);
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	});
+
+</script>
+
+</form>
+</body>
+

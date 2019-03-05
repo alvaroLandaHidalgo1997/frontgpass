@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+  </script>
+  
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+    
+    <form class="login-form">
+      <input type="text" placeholder="username" id="nombre" />
+      <input type="password" placeholder="password" id="contrasenna" />
+      <input type="email" placeholder="email" id="email" />
+      <button type="button" id="update">update user</button>
+      <button type="back" onclick="goBack();" id="back">back</button>
+      
+    </form>
+  </div>
+</div>
+</body>
+<script >
+  window.onload = function(){
+    var id_user = sessionStorage.getItem('iduser');
+    console.log(id_user);
+  };
+
+
+  function goBack(){
+    window.location='tablaver.html';
+  }
+
+
+ 
+  $('#update').click(function(){
+    var id_user = sessionStorage.getItem('iduser');
+
+    var name = $("#nombre").val();
+    var pass = $("#contrasenna").val();
+    var email = $("#email").val();
+    $.ajax({
+      type:"PUT",
+      url:'http://localhost:8888/touristme_/public/api/user/' + id_user,
+
+       //+ sessionStorage.getItem('id')
+      
+      
+      beforeSend:function(request){
+                request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+            },
+      data:{
+        'newname':name,
+        'newPassword':pass,
+        'newEmail':email
+      },
+      
+      success: function(response){
+        console.log('success'+ id_user);
+        alert(response.message);
+      },
+      error: function(response){
+            alert(response.responseJSON.message);
+      }
+    });
+  });
+
+  $('#back').click(function(){
+    $.ajax({
+
+      success: function(response){
+        localStorage.removeItem("iduser");
+        window.location='tablaver.html'
+      
+      },
+      error: function(response){
+        console.log(response)
+      }
+    });
+  });
+
+</script>
+
+</form>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+		
+	</script>
+	
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+    
+    <form class="login-form">
+      
+      <button type="button" id="showcategories">Show all categories</button>
+      <button type="button" id="createnewcategory">create a new category</button>
+      <button type="button" id="logout">logout</button>
+      
+    </form>
+  </div>
+</div>
+</body>
+<script >
+  window.onload = function(){
+    checklogin();
+  }
+
+  function logout(){
+    sessionStorage.clear();
+    
+  }
+	 function checklogin(){
+
+    var token = sessionStorage.getItem('token')
+    if(token == null){
+      window.location='login.html';
+    }
+   }
+		$('#showcategories').click(function(){
+		
+		$.ajax({
+			success: function(response){
+        window.location='tablaver.html'
+      },
+			error: function(response){
+				console.log(response)
+			}
+		});
+	});
+    $('#createnewcategory').click(function(){
+    
+    $.ajax({
+      success: function(response){
+        window.location='createnewcategory.html'
+      },
+      error: function(response){
+        console.log(response)
+      }
+    });
+  });
+    $('#logout').click(function(){
+    $.ajax({
+
+      success: function(response){
+        logout();
+        window.location='login.html';
+      },
+      error: function(response){
+        console.log(response)
+      }
+    });
+  });
+
+</script>
+
+</form>
+

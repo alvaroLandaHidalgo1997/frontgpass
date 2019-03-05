@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+      <input type="text" placeholder="email" id="email" />
+      <input type="password" placeholder="password" id="contrasenna" />
+      <button type="button" id="login">login</button>
+      <button type="button" id="register">register new user</button>
+      
+  </div>
+</div>
+
+</body>
+<script >
+		$('#register').click(function(){
+		$.ajax({
+			success: function(response){
+        window.location='register.html'
+      },
+			error: function(response){
+				console.log(response)
+			}
+		});
+	});
+		$('#login').click(function(){
+		var email = $("#email").val();
+		var pass = $("#contrasenna").val();
+		$.ajax({
+			type:"POST",
+      		url:'http://localhost:8888/Gpass/Gpass2.0/public/api/login',
+			data:{
+				'email':email,
+				'password':pass
+			},
+			success: function(response){
+				
+        		sessionStorage.setItem('token', response.token);
+        		window.location='AdminMenu.html'
+
+			},
+			error: function(data){
+			alert(data.responseJSON.message);
+        	// alert(response.message);        
+			}
+		});
+	});
+
+</script>
+</form>

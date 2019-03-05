@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+	</script>
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+    <button type="back" id="back">back</button>
+    <table>
+        <thead>
+    	<tr>
+    		<th id="id"> id</th>
+    		<th id="role_id"> role_id</th>
+    		<th id="name"> name</th>
+    		<th id="email"> email</th>
+    		
+    	</tr>
+    </thead>
+    </table>
+  </div>
+</div>
+</body>
+<script>
+  window.onload = function(){
+    getusers();
+  };
+    function getusers(){
+    	$.ajax({
+    		url:'http://localhost:8888/touristme_/public/api/user',
+    		type:'GET',
+    		dataType:'json',
+    		beforeSend:function(request){
+    			request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+                
+    		},
+    		success: function(response){
+                console.log('ha llegado a la tabla');
+                console.log(response);
+    			for (var i = 0; i < response.length; i++) {
+                    console.log(response[i].id);
+    				$('#id').append('<tr><td>' + response[i].id + '<tr><td>');
+    				$('#name').append('<tr><td>' + response[i].name + '<tr><td>');
+    				$('#email').append('<tr><td>' + response[i].email + '<tr><td>');
+    				
+    				$('#role_id').append('<tr><td>' + response[i].role_id + '<tr><td>'+'<button  onclick="gotoEdit(' + response[i].id +');"> Edit' + '<button  onclick="deleteuser(' + response[i].id + ');">Delete');
+                    
+    		}
+    	},
+                error: function(xhr,response){
+                console.log('error ')
+                
+            },
+                complete: function(xhr,response){
+                console.log('completo')
+                
+            }
+    });
+}
+    function gotoEdit(id){
+        sessionStorage.setItem('iduser', id);
+    	window.location='updateuser.html';
+    }
+
+    function deleteuser(id){
+        
+        $.ajax({
+			type:"DELETE",
+			url:'http://localhost:8888/touristme_/public/api/user/'+id,
+            beforeSend:function(request){
+        request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
+			},
+			success: function(response){
+                alert(response.message);
+                 window.location='tablaver.html'
+      },
+			error: function(response){
+				console.log(response.data)
+			}
+		});
+    };	
+            $('#back').click(function(){
+        $.ajax({
+
+            success: function(response){
+            window.location='AdminMenu.html'
+              },
+            error: function(response){
+                console.log(response)
+            }
+        });
+    });	
+   </script>
+</html> 
