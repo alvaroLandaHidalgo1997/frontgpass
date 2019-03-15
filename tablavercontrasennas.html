@@ -14,8 +14,8 @@
     	<tr>
     		<th id="id"> id</th>
     		<th id="role_id"> role_id</th>
-    		<th id="name"> name</th>
-    		<th id="email"> email</th>
+    		<th id="password"> name</th>
+    	
     		
     	</tr>
     </thead>
@@ -27,10 +27,10 @@
   window.onload = function(){
     getusers();
   };
-    function getcategories(){
+    function getusers(){
     	$.ajax({
-    		url:'http://localhost:8888/Gpass/Gpass2.0/public/api/index',
-    		type:'POST',
+    		url:'http://localhost:8888/touristme_/public/api/user',
+    		type:'GET',
     		dataType:'json',
     		beforeSend:function(request){
     			request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
@@ -42,8 +42,11 @@
     			for (var i = 0; i < response.length; i++) {
                     console.log(response[i].id);
     				$('#id').append('<tr><td>' + response[i].id + '<tr><td>');
-    				$('#name').append('<tr><td>' + response[i].name + '<tr><td>' +'<button  onclick="gotoEdit(' + response[i].id +');"> EditCategory' + '<button  onclick="deleteuser(' + response[i].id + ');">Delete'+'<button  onclick="seepassword(' + response[i].id +');"> See passwords');
-    				      
+    				$('#title').append('<tr><td>' + response[i].name + '<tr><td>');
+    				$('#password').append('<tr><td>' + response[i].password + '<tr><td>'+'<button  onclick="gotoEdit(' + response[i].id +');"> Edit' + '<button  onclick="deletepassword(' + response[i].id + ');">Delete');
+    				
+    				
+                    
     		}
     	},
                 error: function(xhr,response){
@@ -57,11 +60,12 @@
     });
 }
     function gotoEdit(id){
-        sessionStorage.setItem('iduser', id);
-    	window.location='updatecategory.html';
+        sessionStorage.setItem('idcategory', id);
+    	window.location='updateuser.html';
     }
 
-    function deleteuser(id){
+    function deletepassword(id){
+        
         $.ajax({
 			type:"DELETE",
 			//url:'http://localhost:8888/touristme_/public/api/user/'+id,
@@ -77,24 +81,7 @@
 			}
 		});
     };	
-        function deleteuser(id){
-        
-        $.ajax({
-            type:"POST",
-            //url:'http://http://localhost:8888/Gpassweb//'+id,
-            beforeSend:function(request){
-        request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
-            },
-            success: function(response){
-                alert(response.message);
-                 window.location='tablaver.html'
-      },
-            error: function(response){
-                console.log(response.data)
-            }
-        });
-    };  
-        $('#back').click(function(){
+            $('#back').click(function(){
         $.ajax({
 
             success: function(response){
